@@ -5,145 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CykelMekanikern | Lär dig skruva</title>
     <style>
-        /* Grundläggande design inspirerad av sportiga e-handlare */
         :root {
             --primary-color: #222222;
-            --accent-color: #e3000f; /* Sportig röd färg */
+            --accent-color: #e3000f; 
             --bg-color: #f4f4f4;
             --card-bg: #ffffff;
             --text-color: #333333;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: var(--bg-color); color: var(--text-color); line-height: 1.6; }
+        header { background-color: var(--primary-color); color: white; padding: 20px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        header h1 { font-size: 1.8rem; letter-spacing: 1px; text-transform: uppercase; }
+        main { max-width: 1100px; margin: 30px auto; padding: 0 20px; display: flex; flex-direction: column; gap: 30px; }
+        .instruktion { text-align: center; font-size: 1.1rem; color: #555; padding: 10px; }
 
-        body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-        }
-
-        /* Header (Huvudmeny) */
-        header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        header h1 {
-            font-size: 1.8rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        /* Huvudinnehåll */
-        main {
-            max-width: 900px;
-            margin: 30px auto;
-            padding: 0 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-
-        .instruktion {
-            text-align: center;
-            font-size: 1.1rem;
-            color: #555;
-        }
-
-        /* SVG Cykeln - Behållaren */
+        /* SVG Cykeln */
         .cykel-container {
             background-color: var(--card-bg);
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            overflow: hidden;
             display: flex;
             justify-content: center;
         }
+        svg { width: 100%; max-width: 700px; height: auto; }
 
-        svg {
-            max-width: 100%;
-            height: auto;
-        }
+        .cykeldel { cursor: pointer; transition: all 0.3s ease; }
+        .cykeldel:hover { filter: drop-shadow(0px 0px 5px var(--accent-color)); transform: scale(1.01); transform-origin: center; }
+        .cykeldel.aktiv path, .cykeldel.aktiv circle, .cykeldel.aktiv line, .cykeldel.aktiv polyline { stroke: var(--accent-color) !important; }
 
-        /* CSS för att göra cykeldelarna klickbara och snygga */
-        .cykeldel {
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        /* När man drar musen över en del */
-        .cykeldel:hover {
-            filter: drop-shadow(0px 0px 8px var(--accent-color));
-            transform: scale(1.02);
-            transform-origin: center;
-        }
-
-        /* Klassen som läggs till när man har klickat på en del */
-        .cykeldel.aktiv path, .cykeldel.aktiv circle, .cykeldel.aktiv line {
-            stroke: var(--accent-color);
-        }
-
-        /* Informationskortet som dyker upp */
+        /* Informationskortet */
         #info-kort {
             background-color: var(--card-bg);
             border-radius: 8px;
             padding: 30px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            display: none; /* Dold från början */
-            border-left: 5px solid var(--accent-color);
+            display: none;
+            border-top: 5px solid var(--accent-color);
         }
-
-        #info-kort h2 {
-            margin-bottom: 15px;
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            text-transform: uppercase;
+        #info-kort h2 { margin-bottom: 15px; font-size: 1.5rem; color: var(--primary-color); text-transform: uppercase; }
+        #info-kort h3 { margin-top: 20px; margin-bottom: 10px; font-size: 1.1rem; color: #555; border-bottom: 1px solid #eee; padding-bottom: 5px;}
+        .verktyg-lista { list-style-type: none; display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+        .verktyg-lista li { background-color: #eee; padding: 5px 10px; border-radius: 4px; font-size: 0.9rem; font-weight: bold; }
+        
+        /* Video Container för YouTube */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-top: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-        #info-kort h3 {
-            margin-top: 20px;
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-            color: #555;
-        }
-
-        .verktyg-lista {
-            list-style-type: none;
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .verktyg-lista li {
-            background-color: #eee;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            font-weight: bold;
-        }
-
-        @media (min-width: 768px) {
-            main {
-                flex-direction: row;
-                align-items: flex-start;
-            }
-            .cykel-container {
-                flex: 2;
-            }
-            #info-kort {
-                flex: 1;
-                position: sticky;
-                top: 20px;
-            }
+        @media (min-width: 850px) {
+            main { flex-direction: row; align-items: flex-start; }
+            .cykel-container { flex: 3; }
+            #info-kort { flex: 2; position: sticky; top: 20px; border-top: none; border-left: 5px solid var(--accent-color); }
         }
     </style>
 </head>
@@ -153,121 +74,156 @@
         <h1>CykelMekanikern</h1>
     </header>
 
-    <p class="instruktion">Klicka på en del av cykeln nedan för att lära dig hur du servar den.</p>
+    <p class="instruktion">Klicka på en cykeldel nedan för felsökning, verktyg och <b>instruktionsvideo</b>.</p>
 
     <main>
         <div class="cykel-container">
-            <svg viewBox="0 0 800 500">
+            <svg viewBox="0 0 900 550">
+                
                 <g id="hjul" class="cykeldel" onclick="visaInfo('hjul')">
-                    <circle cx="200" cy="350" r="100" stroke="#333" stroke-width="12" fill="transparent" />
-                    <circle cx="200" cy="350" r="90" stroke="#ccc" stroke-width="2" fill="transparent" />
-                    <circle cx="200" cy="350" r="12" fill="#333" />
-                    <circle cx="600" cy="350" r="100" stroke="#333" stroke-width="12" fill="transparent" />
-                    <circle cx="600" cy="350" r="90" stroke="#ccc" stroke-width="2" fill="transparent" />
-                    <circle cx="600" cy="350" r="12" fill="#333" />
+                    <circle cx="200" cy="350" r="130" stroke="#222" stroke-width="18" fill="transparent" />
+                    <circle cx="200" cy="350" r="115" stroke="#ccc" stroke-width="6" fill="transparent" />
+                    <line x1="200" y1="235" x2="200" y2="465" stroke="#aaa" stroke-width="2"/>
+                    <line x1="85" y1="350" x2="315" y2="350" stroke="#aaa" stroke-width="2"/>
+                    <line x1="118" y1="268" x2="282" y2="432" stroke="#aaa" stroke-width="2"/>
+                    <line x1="118" y1="432" x2="282" y2="268" stroke="#aaa" stroke-width="2"/>
+                    <circle cx="680" cy="350" r="130" stroke="#222" stroke-width="18" fill="transparent" />
+                    <circle cx="680" cy="350" r="115" stroke="#ccc" stroke-width="6" fill="transparent" />
+                    <line x1="680" y1="235" x2="680" y2="465" stroke="#aaa" stroke-width="2"/>
+                    <line x1="565" y1="350" x2="795" y2="350" stroke="#aaa" stroke-width="2"/>
+                    <line x1="598" y1="268" x2="762" y2="432" stroke="#aaa" stroke-width="2"/>
+                    <line x1="598" y1="432" x2="762" y2="268" stroke="#aaa" stroke-width="2"/>
                 </g>
 
                 <g id="ram" class="cykeldel" onclick="visaInfo('ram')">
-                    <line x1="200" y1="350" x2="350" y2="350" stroke="#777" stroke-width="10" stroke-linecap="round" />
-                    <line x1="200" y1="350" x2="300" y2="200" stroke="#777" stroke-width="10" stroke-linecap="round" />
-                    <line x1="350" y1="350" x2="300" y2="180" stroke="#777" stroke-width="14" stroke-linecap="round" />
-                    <line x1="350" y1="350" x2="550" y2="200" stroke="#777" stroke-width="16" stroke-linecap="round" />
-                    <line x1="300" y1="200" x2="550" y2="200" stroke="#777" stroke-width="14" stroke-linecap="round" />
-                    <line x1="550" y1="200" x2="600" y2="350" stroke="#777" stroke-width="12" stroke-linecap="round" />
+                    <line x1="200" y1="350" x2="380" y2="350" stroke="#444" stroke-width="12" stroke-linecap="round" /> <line x1="200" y1="350" x2="310" y2="180" stroke="#444" stroke-width="12" stroke-linecap="round" /> <line x1="380" y1="350" x2="310" y2="140" stroke="#444" stroke-width="16" stroke-linecap="round" /> <line x1="380" y1="350" x2="620" y2="200" stroke="#444" stroke-width="18" stroke-linecap="round" /> <line x1="310" y1="180" x2="620" y2="200" stroke="#444" stroke-width="16" stroke-linecap="round" /> <line x1="620" y1="200" x2="680" y2="350" stroke="#444" stroke-width="14" stroke-linecap="round" /> 
+                    <line x1="610" y1="180" x2="630" y2="220" stroke="#444" stroke-width="20" stroke-linecap="round" />
+                </g>
+
+                <g id="bromsar" class="cykeldel" onclick="visaInfo('bromsar')">
+                    <rect x="260" y="190" width="15" height="30" fill="#222" rx="3" />
+                    <rect x="635" y="230" width="15" height="30" fill="#222" rx="3" />
+                    <path d="M 600 130 Q 640 180 635 230" stroke="#555" stroke-width="3" fill="transparent" />
                 </g>
 
                 <g id="drivlina" class="cykeldel" onclick="visaInfo('drivlina')">
-                    <circle cx="350" cy="350" r="35" fill="transparent" stroke="#222" stroke-width="8" stroke-dasharray="10 5"/>
-                    <circle cx="350" cy="350" r="20" fill="#222" />
-                    <circle cx="200" cy="350" r="25" fill="transparent" stroke="#222" stroke-width="6" />
-                    <path d="M 200 325 L 350 315 M 200 375 L 350 385" stroke="#555" stroke-width="4" />
+                    <circle cx="200" cy="350" r="35" fill="transparent" stroke="#555" stroke-width="8" />
+                    <circle cx="200" cy="350" r="25" fill="transparent" stroke="#555" stroke-width="6" />
+                    <path d="M 200 350 L 210 390 L 195 410" stroke="#222" stroke-width="10" stroke-linecap="round" fill="transparent"/>
+                    <circle cx="380" cy="350" r="45" fill="transparent" stroke="#555" stroke-width="10" stroke-dasharray="10 5"/>
+                    <circle cx="380" cy="350" r="20" fill="#222" />
+                    <line x1="380" y1="350" x2="360" y2="410" stroke="#222" stroke-width="10" stroke-linecap="round"/>
+                    <rect x="340" y="405" width="40" height="10" fill="#555" rx="2" />
+                    <path d="M 200 315 L 380 305 M 195 410 L 380 395" stroke="#333" stroke-width="5" />
                 </g>
 
                 <g id="sadel" class="cykeldel" onclick="visaInfo('sadel')">
-                    <line x1="300" y1="180" x2="290" y2="120" stroke="#333" stroke-width="8" />
-                    <path d="M 250 120 Q 290 100 330 120 L 330 130 L 250 130 Z" fill="#222" />
+                    <line x1="310" y1="140" x2="300" y2="80" stroke="#888" stroke-width="10" />
+                    <path d="M 260 80 Q 300 60 350 80 L 350 90 L 260 90 Z" fill="#222" />
                 </g>
 
                 <g id="styre" class="cykeldel" onclick="visaInfo('styre')">
-                    <line x1="550" y1="200" x2="530" y2="130" stroke="#333" stroke-width="8" />
-                    <path d="M 500 130 Q 530 110 560 130" stroke="#222" stroke-width="10" fill="transparent" stroke-linecap="round"/>
+                    <line x1="615" y1="180" x2="590" y2="130" stroke="#222" stroke-width="10" />
+                    <line x1="590" y1="130" x2="620" y2="120" stroke="#222" stroke-width="10" />
+                    <path d="M 620 120 Q 650 100 660 140 Q 650 160 630 150" stroke="#222" stroke-width="12" fill="transparent" stroke-linecap="round"/>
                 </g>
             </svg>
         </div>
 
         <div id="info-kort">
             <h2 id="del-titel">Klicka på en del</h2>
-            <ul class="verktyg-lista" id="del-verktyg">
-                </ul>
+            <ul class="verktyg-lista" id="del-verktyg"></ul>
+            
             <h3>Symptom</h3>
-            <p id="del-symptom"></p>
+            <p id="del-symptom">Här visas vanliga fel för komponenten du klickar på.</p>
+            
             <h3>Så löser du det</h3>
-            <p id="del-losning"></p>
+            <p id="del-losning">Välj en del för att se guiden.</p>
+
+            <div id="video-wrapper"></div>
         </div>
     </main>
 
     <script>
-        // Data för de olika cykeldelarna
+        // Data med YouTube-ID för rätt instruktionsvideo
         const cykelData = {
             'hjul': {
-                titel: 'Hjul & Däck',
+                titel: 'Hjul & Däck (Punktering)',
                 verktyg: ['Däckavtagare', 'Pump', 'Ny slang'],
-                symptom: 'Cykeln rullar trögt, känns svampig i svängar, eller så är däcket helt platt (punktering).',
-                losning: 'Börja med att kontrollera lufttrycket. Om du har punktering: lossa hjulet, använd däckavtagare för att kränga av ena sidan av däcket, ta ut den trasiga slangen. Pumpa lite luft i den nya slangen, stoppa i den, kräng tillbaka däcket och pumpa upp.'
+                symptom: 'Cykeln rullar trögt, fälgen slår i marken eller så är däcket helt platt.',
+                losning: 'Lossa hjulet. Använd däckavtagare för att kränga av ena sidan av däcket och ta ut den trasiga slangen. Pumpa i ytterst lite luft i den nya slangen så den får form, lägg i den i däcket, kräng tillbaka däcket med händerna och pumpa upp till rekommenderat tryck.',
+                youtubeId: 'WA35caUhfMo' // Cykelgear: Byta cykelslang
             },
             'drivlina': {
-                titel: 'Drivlina & Kedja',
-                verktyg: ['Kedjeolja', 'Trasa', 'Avfettning'],
-                symptom: 'Kedjan gnisslar, rasslar eller hoppar över kuggar när du trampar hårt.',
-                losning: 'En smutsig kedja sliter ut dina drev snabbt! Spraya avfettning på en trasa och torka kedjan ren. Applicera därefter en droppe cykelolja på varje länk. Snurra pedalerna baklänges några varv och torka sedan bort all överflödig olja med en ren trasa.'
+                titel: 'Växlar & Kedja',
+                verktyg: ['Stjärnskruvmejsel', 'Kedjeolja', 'Trasa'],
+                symptom: 'Kedjan hoppar mellan dreven, rasslar på ett irriterande sätt, eller så går det inte att få i tyngsta/lättaste växeln.',
+                losning: 'Ett rasslande ljud beror oftast på att växelvajern har töjt sig lite. Prova att skruva vajerspännaren (sitter där vajern går in i bakväxeln) ett halvt varv moturs för att spänna vajern. Om kedjan hoppar av helt behöver du justera ändlägesskruvarna (High/Low).',
+                youtubeId: 'kDDIIJLvUHk' // Cykloteket: Justera bakväxel
+            },
+            'bromsar': {
+                titel: 'Bromsar (Fälgbroms)',
+                verktyg: ['Insexnyckel', 'Ev. nya bromsklossar'],
+                symptom: 'Bromsarna tar dåligt, du måste trycka handtaget hela vägen in till styret, eller så skriker de när du bromsar.',
+                losning: 'Om handtaget går i botten behöver vajern spännas. Om bromsarna tar ojämnt, skruva på fjäderskruven på sidan av bromsarmen. Se till att bromsklossarna träffar fälgen rakt, och inte rör vid själva gummidäcket! Byt klossar om skårorna i gummit är nerslitna.',
+                youtubeId: 'JlCcODZTvV4' // Cykelgear: Justera V-broms
             },
             'sadel': {
-                titel: 'Sadel & Sadelstolpe',
-                verktyg: ['Insexnyckel', 'Fett'],
-                symptom: 'Du får ont i knäna när du cyklar, eller så sjunker sadeln ner när du sitter på den.',
-                losning: 'Om sadeln sjunker: lossa klämman, dra ut sadelstolpen, torka rent och applicera lite monteringspasta (eller fett på metallramar), dra åt igen. Rätt höjd har du när ditt ben är nästan helt rakt (men med en liten böj) när pedalen är i sitt lägsta läge.'
+                titel: 'Sadel & Komfort',
+                verktyg: ['Insexnyckel', 'Monteringsfett'],
+                symptom: 'Ont i knäna framtill (sadeln är för låg) eller ont på baksidan av knäna/höfterna gungar (sadeln för hög).',
+                losning: 'För att hitta rätt höjd: Sitt på sadeln och sätt hälen på pedalen när den är längst ner. Ditt ben ska nu vara helt rakt. När du sedan flyttar fram foten för att trampa normalt kommer du ha en liten, perfekt böj i knäleden.',
+                youtubeId: '' // Lämnas tom om man inte vill ha video här
             },
             'ram': {
                 titel: 'Cykelramen',
-                verktyg: ['Varmt vatten', 'Svamp'],
-                symptom: 'Ramen är täckt av lera och grus, vilket kan leda till att smuts letar sig in i vevlager och styrlager.',
-                losning: 'Håll cykeln ren! Undvik högtryckstvätt eftersom det pressar in vatten i kullagren. Använd en hink med varmt vatten, lite milt rengöringsmedel och en svamp. Torka av ramen regelbundet för att upptäcka eventuella sprickor i tid.'
+                verktyg: ['Trasa', 'Milt rengöringsmedel', 'Varmt vatten'],
+                symptom: 'Smutsig ram samlar fukt vilket kan leda till rost, och döljer sprickor i lacken eller metallen.',
+                losning: 'Att tvätta cykeln är det bästa underhållet! Undvik högtryckstvätt som förstör lagren. Tvätta med svamp, skölj av försiktigt och passa på att inspektera ramen efter skador.',
+                youtubeId: ''
             },
             'styre': {
-                titel: 'Styre & Styrlager',
+                titel: 'Styrlager & Styrstam',
                 verktyg: ['Insexnyckel'],
-                symptom: 'Styret sitter snett i förhållande till framhjulet, eller så glappar det när du håller in frambromsen och vaggar cykeln.',
-                losning: 'Om styret är snett: Lossa skruvarna på styrstammens sidor, rikta styret rakt mot hjulet och dra åt igen. Om det glappar: Lossa sidoskruvarna, dra åt toppskruven (top cap) *försiktigt* tills glappet försvinner men styret fortfarande rör sig fritt. Dra sedan åt sidoskruvarna igen.'
+                symptom: 'Du känner ett "kluckande" glapp i framgaffeln när du håller in frambromsen och gungar cykeln fram och tillbaka.',
+                losning: 'Detta betyder att styrlagret är löst. Lossa först skruvarna på sidan av styrstammen. Skruva sedan in toppskruven (top cap) lite försiktigt tills glappet försvinner, men se till att styret fortfarande går lätt att svänga. Dra sedan åt sidoskruvarna hårt igen!',
+                youtubeId: '' 
             }
         };
 
-        // Funktion för att uppdatera gränssnittet
         function visaInfo(delId) {
-            // Hämta datan för den klickade delen
             const data = cykelData[delId];
+            if (!data) return;
 
-            if (data) {
-                // Visa informationskortet
-                document.getElementById('info-kort').style.display = 'block';
-                
-                // Uppdatera texterna
-                document.getElementById('del-titel').innerText = data.titel;
-                document.getElementById('del-symptom').innerText = data.symptom;
-                document.getElementById('del-losning').innerText = data.losning;
+            document.getElementById('info-kort').style.display = 'block';
+            document.getElementById('del-titel').innerText = data.titel;
+            document.getElementById('del-symptom').innerText = data.symptom;
+            document.getElementById('del-losning').innerText = data.losning;
 
-                // Uppdatera verktygslistan (skapar små 'taggar')
-                const verktygHtml = data.verktyg.map(verktyg => `<li>🛠️ ${verktyg}</li>`).join('');
-                document.getElementById('del-verktyg').innerHTML = verktygHtml;
+            const verktygHtml = data.verktyg.map(v => `<li>🛠️ ${v}</li>`).join('');
+            document.getElementById('del-verktyg').innerHTML = verktygHtml;
 
-                // Hantera visuell feedback på cykeln (ta bort 'aktiv' från alla, lägg till på den klickade)
-                const allaDelar = document.querySelectorAll('.cykeldel');
-                allaDelar.forEach(d => d.classList.remove('aktiv'));
-                document.getElementById(delId).classList.add('aktiv');
+            const allaDelar = document.querySelectorAll('.cykeldel');
+            allaDelar.forEach(d => d.classList.remove('aktiv'));
+            document.getElementById(delId).classList.add('aktiv');
 
-                // På mobila enheter, rulla smidigt ner till informationskortet när man klickat
-                if (window.innerWidth < 768) {
-                    document.getElementById('info-kort').scrollIntoView({ behavior: 'smooth' });
-                }
+            // Hantera YouTube-videon
+            const videoWrapper = document.getElementById('video-wrapper');
+            if (data.youtubeId) {
+                // Om ett YouTube-ID finns, skapa en inbäddad spelare
+                videoWrapper.innerHTML = `
+                    <h3 style="margin-top: 20px;">Videoguide</h3>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/${data.youtubeId}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                `;
+            } else {
+                // Om ingen video finns för just den här delen, rensa området
+                videoWrapper.innerHTML = '';
+            }
+
+            if (window.innerWidth < 850) {
+                document.getElementById('info-kort').scrollIntoView({ behavior: 'smooth' });
             }
         }
     </script>
